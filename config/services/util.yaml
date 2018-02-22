@@ -1,15 +1,27 @@
 services:
     app.util.battle:
         class: App\Util\BattleUtil
+        arguments:
+            - '@app.util_luck_util'
+            - '@app.util.skill.counter_attack'
+            - '@app.util.skill.lucky_strike'
+            - '@app.util.skill.stunning_blow'
+
+    app.util_luck_util:
+        class: App\Util\LuckUtil
 
     app.util.combatant_turn:
         class: App\Util\CombatantTurnUtil
 
-    app.util.skill.counter_attak:
+    app.util.skill.counter_attack:
         class: App\Util\Skill\CounterAttackSkillUtil
 
     app.util.skill.lucky_strike:
         class: App\Util\Skill\LuckyStrikeSkillUtil
+        arguments:
+            - '@app.util_luck_util'
 
     app.util.skill.stunning_blow:
         class: App\Util\Skill\StunningBlowSkillUtil
+        arguments:
+            - '@app.util_luck_util'

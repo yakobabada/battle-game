@@ -81,7 +81,7 @@ class PlayGameCommand extends Command
                 ''
             ]);
 
-            $this->battleUtil->attack(
+            $this->battleUtil->play(
                 $attacker,
                 $this->combatantTurnUtil->getDefender()
             );
@@ -90,10 +90,12 @@ class PlayGameCommand extends Command
                 break;
             }
 
-            $this->combatantTurnUtil->chooseNext();
+            if (!$this->battleUtil->stopSwap($attacker)) {
+                $this->combatantTurnUtil->chooseNext();
 
-            $attacker = $this->combatantTurnUtil->getAttacker();
-            $defender = $this->combatantTurnUtil->getDefender();
+                $attacker = $this->combatantTurnUtil->getAttacker();
+                $defender = $this->combatantTurnUtil->getDefender();
+            }
         }
 
         if (!$defender->isAlive()) {
