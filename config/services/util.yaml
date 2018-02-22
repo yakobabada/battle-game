@@ -1,0 +1,15 @@
+services:
+    app.util.battle:
+        class: App\Util\BattleUtil
+
+    app.util.combatant_turn:
+        class: App\Util\CombatantTurnUtil
+
+    app.util.skill.counter_attak:
+        class: App\Util\Skill\CounterAttackSkillUtil
+
+    app.util.skill.lucky_strike:
+        class: App\Util\Skill\LuckyStrikeSkillUtil
+
+    app.util.skill.stunning_blow:
+        class: App\Util\Skill\StunningBlowSkillUtil

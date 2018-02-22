@@ -1,0 +1,8 @@
+services:
+    app.command.play_game:
+        class: App\Command\PlayGameCommand
+        arguments:
+            - '@app.util.battle'
+            - '@app.util.combatant_turn'
+        tags:
+            - { name: 'console.command'}
