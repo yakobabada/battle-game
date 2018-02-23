@@ -13,5 +13,5 @@ PHP 7
 
 ## Start the battle
 
-- `bin/console app:play-game`
+- `bin/console app:play-game namePlayer1 namePlayer2`
 
