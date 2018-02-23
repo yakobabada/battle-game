@@ -1,5 +1,5 @@
 # battle-game
-PHP application that simulates a battle between two combatants. It's PHP application, it's built on symfony 4 framework.
+PHP application that simulates a battle between two combatants. It's PHP application based on symfony 4 framework.
 
 ## Requirement:
 
