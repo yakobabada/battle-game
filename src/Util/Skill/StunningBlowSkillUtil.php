@@ -7,7 +7,7 @@ use App\Util\LuckUtil;
 
 class StunningBlowSkillUtil
 {
-    const CHANCE = 3;
+    const CHANCE = 2;
 
     /**
      * @var LuckUtil
