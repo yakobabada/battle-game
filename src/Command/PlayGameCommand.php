@@ -58,16 +58,13 @@ class PlayGameCommand extends Command
             $input->getArgument('second-combatant')
         );
 
-        $this->combatantTurnUtil->chooseOpponents($firstCombatant, $secondCombatant);
+        $opponents = $this->combatantTurnUtil->getOpponents($firstCombatant, $secondCombatant);
 
         $output->writeln([
             'Start',
             '============',
             '',
         ]);
-
-        $attacker = $this->combatantTurnUtil->getAttacker();
-        $defender = $this->combatantTurnUtil->getDefender();
 
         for ($i=1;$i<=30;$i++) {
             $output->writeln([
@@ -76,32 +73,29 @@ class PlayGameCommand extends Command
             ]);
 
             $output->writeln([
-                'Attacker: ' . $attacker->getName() . ' with health: ' . $attacker->getHealth(),
-                'Defender: ' . $defender->getName() . ' with health: ' . $defender->getHealth(),
+                'Attacker: ' . $opponents['attacker']->getName() . ' with health: ' . $opponents['attacker']->getHealth(),
+                'Defender: ' . $opponents['defender']->getName() . ' with health: ' . $opponents['defender']->getHealth(),
                 ''
             ]);
 
             $this->battleUtil->play(
-                $attacker,
-                $defender
+                $opponents['attacker'],
+                $opponents['defender']
             );
 
-            if (!$defender->isAlive()) {
+            if (!$opponents['defender']->isAlive()) {
                 break;
             }
 
-            if (!$this->battleUtil->stopSwap($attacker)) {
-                $this->combatantTurnUtil->chooseNext();
-
-                $attacker = $this->combatantTurnUtil->getAttacker();
-                $defender = $this->combatantTurnUtil->getDefender();
+            if (!$this->battleUtil->stopSwap($opponents['attacker'])) {
+                $opponents = $this->combatantTurnUtil->getNext($opponents['attacker'], $opponents['defender']);
             }
         }
 
-        if (!$defender->isAlive()) {
+        if (!$opponents['defender']->isAlive()) {
             $output->writeln([
-                'The winner is: ' . $attacker->getName(),
-                'The loser is: ' . $defender->getName()
+                '🙃 The winner is: ' . $opponents['attacker']->getName() . ' 🙃',
+                '🤐 The loser is: ' . $opponents['defender']->getName() . ' 🤐'
             ]);
 
             return;

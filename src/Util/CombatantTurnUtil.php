@@ -6,73 +6,34 @@ use App\Entity\Combatant;
 
 class CombatantTurnUtil
 {
-    /**
-     * @var Combatant
-     */
-    private $attacker;
 
-    /**
-     * @var Combatant
-     */
-    private $defender;
-
-    /**
-     * @param Combatant $attacker
-     */
-    public function setAttacker(Combatant $attacker)
-    {
-        $this->attacker = $attacker;
-    }
-
-    /**
-     * @return Combatant
-     *
-     * @throws \Exception
-     */
-    public function getAttacker() : Combatant
-    {
-        if (null === $this->attacker) {
-            throw new \Exception('Attacker hasn\'t chosen yet');
-        }
-
-        return $this->attacker;
-    }
-
-    /**
-     * @param Combatant $defender
-     */
-    public function setDefender(Combatant $defender)
-    {
-        $this->defender = $defender;
-    }
-
-    /**
-     * @return Combatant
-     *
-     * @throws \Exception
-     */
-    public function getDefender() : Combatant
-    {
-        if (null === $this->defender) {
-            throw new \Exception('Defender hasn\'t chosen yet');
-        }
-
-        return $this->defender;
-    }
 
     /**
      * @param Combatant $firstCombatant
      * @param Combatant $secondCombatant
+     *
+     * @return array
      */
-    public function chooseOpponents(Combatant $firstCombatant, Combatant $secondCombatant)
+    public function getOpponents(Combatant $firstCombatant, Combatant $secondCombatant)
     {
-        $this->setAttacker($this->ChooseAttacker($firstCombatant, $secondCombatant));
-        $this->setDefender($this->determineDefender($firstCombatant, $secondCombatant));
+        $attacker = $this->getAttacker($firstCombatant, $secondCombatant);
+        $defender = $this->getDefenderByAttacker($attacker, $firstCombatant, $secondCombatant);
+
+        return [
+            'attacker' => $attacker,
+            'defender' => $defender
+        ];
     }
 
-    public function chooseNext()
+    /**
+     * @param Combatant $attacker
+     * @param Combatant $defender
+     *
+     * @return array
+     */
+    public function getNext(Combatant $attacker, Combatant $defender)
     {
-        $this->swap();
+        return $this->swap($attacker, $defender);
     }
 
     /**
@@ -83,7 +44,7 @@ class CombatantTurnUtil
      *
      * @throws \Exception
      */
-    private function ChooseAttacker(Combatant $firstCombatant, Combatant $secondCombatant)
+    private function getAttacker(Combatant $firstCombatant, Combatant $secondCombatant)
     {
         $faster = $this->getFaster($firstCombatant, $secondCombatant);
 
@@ -140,21 +101,27 @@ class CombatantTurnUtil
      *
      * @return Combatant
      */
-    private function determineDefender(Combatant $firstCombatant, Combatant $secondCombatant) : Combatant
+    private function getDefenderByAttacker(Combatant $attacker, Combatant $firstCombatant, Combatant $secondCombatant) : Combatant
     {
-        if ($this->getAttacker() === $firstCombatant) {
+        if ($attacker === $firstCombatant) {
             return $secondCombatant;
         }
 
         return $firstCombatant;
     }
 
-    private function swap()
+    /**
+     * @param Combatant $attacker
+     * @param Combatant $defender
+     *
+     * @return array
+     */
+    private function swap(Combatant $attacker, Combatant $defender)
     {
-        $attacker = $this->getAttacker();
-
-        $this->setAttacker($this->getDefender());
-        $this->setDefender($attacker);
+        return [
+            'defender' => $attacker,
+            'attacker' => $defender
+        ];
     }
 }
 
