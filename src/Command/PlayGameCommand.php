@@ -83,7 +83,7 @@ class PlayGameCommand extends Command
 
             $this->battleUtil->play(
                 $attacker,
-                $this->combatantTurnUtil->getDefender()
+                $defender
             );
 
             if (!$defender->isAlive()) {
